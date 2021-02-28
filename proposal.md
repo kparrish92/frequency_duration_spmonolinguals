@@ -31,7 +31,7 @@ findings of a lexical frequency shortening effect in Spanish production,
 but this time in an experimental setting, and to examine this effect in
 perception.
 
-## Research Questions and predictions
+## Research Questions
 
 I propose the following research questions:
 
@@ -40,6 +40,7 @@ shorter as lexical frequency increases?
 
 RQ2: Do Spanish speakers match shorter vowel durations to more frequent
 words?
+
 
 ## Proposed tasks
 
