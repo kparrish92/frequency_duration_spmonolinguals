@@ -31,23 +31,19 @@ findings of a lexical frequency shortening effect in Spanish production,
 but this time in an experimental setting, and to examine this effect in
 perception.
 
-<!--- 
-Previous studies had already reported frequency effects on vowel duration in English, so Gahl (2008) focused more on lemma frequency effects (frequency noninheritance; reflected as duration differences between homophones) vs form frequency effects (frequency inheritance; reflected as no duration differences between homophones). Gahl (2008) also mentions that frequency inheritance/noninheritance may differ across languages depending on the number of homophones present in the language. In Spanish, I have not found any studies investigating the relationship between duration and frequency (even less for homophones production), so I think there is a lot to examine here. Are we following Gahl's path and using homophones to see duration differences between lemma and form frequency? or do we want to stay more general and just see if frequency affects duration in general? or are we trying to do both? Since there is no evidence in Spanish, we might have to start 'from the beginning'. 
--->
-<!-- Also, I am still not sure about how investigating this in perception would work. I think we need to think about it a little more. It might be good to start with production first and then see how we can test this in perception or word recognition. -->
 
 ## Research Questions
 
-I propose the following research questions:
+RQ1: Does lexical frequency affect vowel duration in the production of Spanish monolinguals?
 
-RQ1: Will vowel duration of stressed syllables in Spanish words be
-shorter as lexical frequency increases?
+RQ2: Do English learners of Spanish exhibit vowel duration changes as a function of lexical frequency in Spanish?
 
-RQ2: Do Spanish speakers match shorter vowel durations to more frequent
-words?
-<!--- I think both RQs above are asking about the same thing: whether lexical frequency affects vowel duration.
-It is best to just put it in one question -->
-<!--- RQ1: Does lexical frequency affect vowel duration in Spanish? -->
+RQ3: Do Spanish learners of English exhibit vowel duration changes as a function of lexical frequency in English? 
+
+
+Note: If Spanish monolinguals do not exhibit vowel duration changes predicted by lexical frequency, we can examine whether Spanish L1 - English L2 learners exhibit frequency effects on vowel duration in L2 English since we know these effects are present in monolingual English speech.
+It would also be interesting to test whether English monolinguals, and Spanish L1 - English L2 learners, perceive the differences in vowel duration between high frequency and low frequency homophones. 
+We could also test whether English L1 - Spanish L2 learners transfer frequency effects on duration to L2 Spanish production.
 
 ## Proposed tasks
 
@@ -75,7 +71,6 @@ It is best to just put it in one question -->
     just do the vowel sound). If we only present vowel sounds, and not
     whole words, we may be able to do this task without using homophone
     pairs.
-<!-- We need to talk more about how to measure this in perception. -->
 
 ## Analysis
 
