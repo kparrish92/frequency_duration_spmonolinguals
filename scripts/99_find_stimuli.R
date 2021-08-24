@@ -12,7 +12,7 @@ library(languageR)
 
 ## Read in data 
 
-data = read.csv("./lexicalfrequencydata/corpus.csv") 
+data = read.csv("./lexicalfrequencydata/test.csv") 
 
 ## tidy data and visualize the distribution of log frequency 
 ## Also filtered for 6 letter words, we can choose other lengths too, but this 
