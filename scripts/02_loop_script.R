@@ -2,6 +2,7 @@ library(dplyr)
 library(tidyverse)
 library(h2o)
 library(sjmisc)
+\
 library(here)
 #### description 
 
@@ -9,7 +10,6 @@ library(here)
 
 female <- read.table("corpus_data/line_index_female.tsv",
                      sep="\t", header=FALSE)
-
 
 freq <- read.csv("lexicalfrequencydata/subtlex.csv")
 
@@ -44,8 +44,6 @@ freq_df <- rbind(freq1, freq2, freq3) %>%
 
 # pivot data so that each word is in its own cell
 
-female %>% 
-  pivot_longer(c(`V1`, `V2`), names_to = "word", values_to = "participant")
 
 df <- character()
 

@@ -19,5 +19,8 @@ library("contributoR")
 library("magick")
 library("webshot")
 library("kableExtra")
-
+library(lme4)
+library(lmerTest)
+library(gtools)
+library(psych)
 # ------------------------------------------

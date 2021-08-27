@@ -1,0 +1,180 @@
+---
+title: "Results on the initial corpus investigations in both Spanish and English"
+output: html_document
+---
+```{r setup, include=FALSE, echo=FALSE}
+library(here)
+library(readr)
+library(tidyverse)
+library(brms)
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE)
+library(bayestestR)
+```
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+# Overview 
+
+I analyzed data from two corpora to investigate whether lexical frequency (`log frequency` in the data) predicted `duration` in milliseconds of an entire word, while controlling for speech rate and word length. In particular, we suspected that more frequent words would have shorter duration. An overview of the general process is outlined below in steps, with further details in the body of this document. *The results provided evidence that lexical frequency is associated with shorter duration when speech rate and word length are statistically controlled in both Spanish and English. *
+
+1. Downloaded `.wav` files and a single `.txt` file containing the transcribed utterances from each corpus from openslr.org
+2. Ran `R` scripts to create individual `.txt` files from the larger `.txt` files that matched the `.wav` files. This `.txt` file was used for auto-segmentation. 
+3. Ran autosegmentation in the browser-based platform Webmaus Basic. (https://clarin.phonetik.uni-muenchen.de/BASWebServices/interface/WebMAUSBasic). Checks for quality have been promising, though a large scale hand-correction is needed. 
+4. Ran `R` scripts to tidy the data so that one word appeared per row. Segments were also extracted from this data and their durations were calculated by extracting beginning and ending times from each `TextGrid` file.  
+5. Loaded frequency corpora, the Subtlex (Ceutos et al., 2011) http://crr.ugent.be/archives/679 and an open source collection of unigram frequencies in English (https://www.kaggle.com/rtatman/english-word-frequency/metadata). 
+6. Calculated `rate` as segments/second using the imported information from the `TextGrids` (quick and dirty), and log-transformed frequencies and mutate `length` as number of segments per word.
+7. Filter to only include 4-8 segment words to avoid many function words in both languages. 
+8. Cleaned up words in `.txt` files by removing capital letters, spaces, and punctuation. 
+9. Matched the frequency corpora to the production corpora using `left_join`. 
+10. Ran a Bayesian Analysis for both models. 
+11. Saved and imported the results to create this `.rmd`!
+
+# Research Question 
+
+Following research which found evidence that more frequent non-function words tend to shorten in duration (Gahl, 2008), we wondered if the same frequency-driven shortening would occur in Spanish. It has been pointed out that shortening may not occur in Spanish as it does in English due to typological differences between the languages. Specifically, Spanish is a syllable-timed language whereas English is a stress-timed language, meaning that syllable durations in Spanish are thought to be similar, regardless of stress. Nonetheless, the question persists:
+
+**RQ:** As the frequency words increase in Spanish, does whole word duration decrease?
+
+However, there is alos evidence to suggest that lexical frequency does play a role in Spanish word processing, since some research shows that higher lexical frequency is associated with faster word recognition in Spanish (need citations!).
+
+```{r}
+# load needed data 
+span_data <- read.csv(here("corpus_data", "tidy", "span_tidy.csv"))
+eng_data <- read.csv(here("corpus_data", "tidy", "eng_tidy.csv"))
+span_model  <- read_rds(here("corpus_data", "models", "span_model_bayes.RDS"))
+eng_model <- read_rds(here("corpus_data", "models", "eng_model_bayes.RDS"))
+fixef_df_span <- fixef(span_model) %>% 
+  as.data.frame()
+fixef_df_eng <- fixef(eng_model) %>% 
+  as.data.frame()
+span_model_df <- span_model %>% 
+  as.data.frame()
+hdi_span <- hdi(span_model_df$b_log_freq) 
+
+# calculate range of difference from most to least frequent tokens 
+low = (fixef(span_model)[2,1]*min(span_data$log_freq, na.rm=TRUE) + fixef(span_model)[1,1])*1000 %>% 
+  as.data.frame()
+high = (fixef(span_model)[2,1]*max(span_data$log_freq, na.rm=TRUE) + fixef(span_model)[1,1])*1000 %>% 
+  as.data.frame()
+low_e = (fixef(eng_model)[2,1]*min(eng_data$log_freq, na.rm=TRUE) + fixef(eng_model)[1,1])*1000 %>% 
+  as.data.frame()
+high_e = (fixef(eng_model)[2,1]*max(eng_data$log_freq, na.rm=TRUE) + fixef(eng_model)[1,1])*1000 %>% 
+  as.data.frame()
+
+low_obs_e <- min(eng_data$log_freq, na.rm=TRUE)
+slope_e <- fixef(eng_model)[2,1]
+int_e <- fixef(eng_model)[1,1]
+
+low_obs_s <- min(span_model$log_freq, na.rm=TRUE)
+slope_s <- fixef(span_model)[2,1]
+int_s <- fixef(span_model)[1,1]
+# when x = 10.27, y = .559
+# what does y equal when x = 0?
+# multiple low_obs by slope minus intercept 
+y_int_e <- (low_obs_e*slope_e)*-1 + int_e
+y_int_s <- (slope_s*slope_s)*-1 + int_s
+
+fixef_df_eng <- fixef(eng_model) %>% 
+  as.data.frame()
+eng_model_df <- eng_model %>% 
+  as.data.frame()
+hdi_eng <- hdi(eng_model_df$b_log_freq) 
+
+corpus <- read.csv(here("lexicalfrequencydata", "subtlex_tidy.csv"))
+freq <- read.csv(here("eng_corpus_data", "tidy", "unigram_freq.csv"))
+
+# for plots 
+span_post <- as_tibble(span_model) %>% select(int = b_Intercept, b = b_log_freq) %>% 
+  mutate(int2 = (low_obs_s*b)*-1 + int)
+eng_post <- as_tibble(eng_model) %>% select(int = b_Intercept, b = b_log_freq) %>% 
+    mutate(int2 = (low_obs_e*b)*-1 + int)
+```
+
+# Corpora
+
+The corpora were found using a web-search which led to openslr.org, a website for open source speech data including corpora. The site contains over 100 resources in several languages. The corpora, as well as all subsequent analyses, were downloaded directly from this site and were stored locally and in a github repository. 
+
+#### English corpus 
+
+The English corpus chosen was Free ST American English Corpus (https://openslr.org/45/). The corpus contained cell-phone recorded utterances from 10 total speakers (5 female), with each speaker providing around 350 utterances. A total of `r nrow(eng_data)` recordings met the criteria for inclusion in the present analysis in this study and included `r nrow(ranef(eng_model) %>% as.tibble())` unique words for analysis. The speech provided was appears to have been read speech and human transcribed, but additional details about this corpus were not provided. 
+
+#### Spanish corpus 
+
+The Spanish corpus is a crowdsourced high-quality Argentinian Spanish speech data set (https://openslr.org/61/) . The data was recorded by volunteers in Buenos Aires, Argentina. The total number of speakers in unclear, and might be as many as the number of observations (`r nrow(span_data)`). `r nrow(ranef(span_model) %>% as.tibble())` unique words were included in the analysis. This corpus also appears to be read speech. 
+
+# Statistical Analysis
+
+Two Bayesian linear regressions were done on both corpora in R using the `brm` function. In both cases, the outcome variable was `duration`, and the equation used was as follows: `duration ~ log_freq + rate + length + (1 | word)`. That is, duration was the outcome variable and the fixed effect predictors were rate and length, while including a random slope per word. The defaults priors of the `brm` function were used for these models.
+
+# Results 
+
+Overall, the results suggest that higher frequency words shorten in both Spanish and English when duration and speech rate are statistically controlled for. This general trend can be observed in figures 1 and 2 in the line of best fit, which has negative slope. The y axis is the duration of segments in milliseconds and the x-axis is the log-transformed lexical frequency of derived from corpus data. The points represent the mean duration of a word, and the color of each point indicates its length in orthographic segments.
+
+##### Figure 1: Spanish data and most plausible line of best fit
+```{r}
+# spanish plot 
+span_data %>% 
+  ggplot(., aes(x = log_freq, y = duration, color = length)) + 
+    geom_point(pch = 20) +
+  geom_abline(data = sample_n(span_post, 4000), 
+    aes(intercept = int2, slope = b), color = "grey80", alpha = 0.5) + 
+  geom_abline(intercept = fixef(span_model)[1, 1], slope = fixef(span_model)[2, 1], 
+    color = "darkred", size = 1.5) + ylim(0,1) + xlab("Log Frequency") + ylab("Duration (ms)")
+```
+
+##### Figure 2: English data and most plausible line of best fit
+```{r}
+
+eng_data %>% 
+  ggplot(., aes(x = log_freq, y = duration, color = length, shape = rate)) + 
+    geom_point(pch = 20) + geom_abline(intercept = y_int_e, slope = fixef(eng_model)[2, 1], 
+    color = "darkred", size = 1.5) + xlab("Log Frequency") + ylab("Duration (ms)")
+
+```
+
+The parameter estimates for each model, as well as details regarding the dispursion of plausible parameter estiamtes, can be viewed in tables 1 and 2. The parameter estimate for `log_freq` in the Spanish model suggests that an increase in one unit of log frequency results a decrease in duration of `r fixef_df_span$Estimate[2] %>% round(digits = 3)*-1000`ms in duration, and the English model suggests that an increase in one unit of log frequency results a decrease in duration of `r fixef_df_eng$Estimate[2] %>% round(digits = 3)*-1000`ms in duration. 
+
+##### Table 1: Spanish model 
+```{r}
+fixef(span_model) %>% 
+  knitr::kable(digits = 3)
+```
+
+##### Table 2: English model 
+```{r}
+fixef(eng_model) %>% 
+  knitr::kable(digits = 3)
+```
+
+An advantage of Bayesian analysis is that, rather than producing a single estimate, an entire distribution of plausible parameter estimates (referred to as the posterior distribution) is produced. The posterior distribution allows for certainty of the most plausible estimate to be readily observed, since less certainty of an estimate is associated with a wider distribution of parameter estimates. In this case, both posterior distributions are rather narrow (seen in figures 3 and 4), and do not encompass 0 or a positive value. This lack of positive and zero values is vital to this analysis, since it was predicted that higher frequency would be associated with a shorter duration. In the context of the models, only a posterior distribution that does not include zero and positive values would provide evidence for our hypothesis.
+
+##### Figure 3: English Posterior distributions with medians and 80% intervals
+```{r}
+plot_title_eng <- ggtitle("English Posterior distributions",
+                      "with medians and 80% intervals")
+bayesplot::mcmc_areas(eng_post,
+           pars = c("b"),
+           prob = 0.8) + geom_vline(xintercept = 0) + xlim(-.1, .1)
+```
+
+##### Figure 4: Spanish Posterior distributions with medians and 80% intervals
+```{r}
+plot_title_span <- ggtitle("Spanish Posterior distributions",
+                      "with medians and 80% intervals")
+bayesplot::mcmc_areas(span_post,
+           pars = c("b"),
+           prob = 0.8) + geom_vline(xintercept = 0) + xlim(-.1, .1)
+``` 
+
+
+# Interim conclusions 
+
+##### 1. Spanish: There is evidence for a lexical frequency driven shortening of whole Spanish words. 
+
+With rate and length controlled for in the model, all plausible estimates produced by the Bayesian model are negative, indicating that as frequency increases, duration decreases. Additionally, the range of difference in ms from the most frequent to least frequent words is from `r high %>% round(digits = 2)`ms to `r low %>% round(digits = 2)`ms. Although, the intercept for Spanish is much lower than English, though the magnitude of the effect is similar. 
+
+##### 2. English: We may have a replication of the same lexical frequency effect in whole English words.
+
+With rate and length controlled for in the model, all plausible estimates produced by the Bayesian model are negative, indicating that as frequency increases, duration decreases. Additionally, the range of difference in ms from the most frequent to least frequent words is from `r high_e %>% round(digits = 2)`ms to `r low_e %>% round(digits = 2)`ms.
