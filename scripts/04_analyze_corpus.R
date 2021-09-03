@@ -48,8 +48,6 @@ mod_s <- mod %>%
 mod %>% 
   write_rds(here("corpus_data", "models", "span_model_bayes.RDS"))
 
-brms::hdi(mod$
-
 summary(mod)
 
 merge_df %>% 

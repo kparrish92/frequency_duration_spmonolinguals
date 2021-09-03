@@ -1,14 +1,13 @@
 
 # Source libs -----------------------------------------------------------------
 
-source(here::here("scripts", "00_libs.R"))
+source(here::here("scripts", "00_libraries.R"))
 source(here::here("scripts", "01_helpers.R"))
 
 # -----------------------------------------------------------------------------
 # attempt to add word vector so that it is known which word each segment comes from
 
 ## read in data 
-test <- read_textgrid("corpus_data/es_ar_female/arf_00295_00000740990.TextGrid")
 
 list_of_files <- list.files(path = "corpus_data/es_ar_female", recursive = TRUE,
                             pattern = "\\.TextGrid$", 

@@ -1,4 +1,12 @@
 
+# Source libs -----------------------------------------------------------------
+
+source(here::here("scripts", "00_libs.R"))
+source(here::here("scripts", "01_helpers.R"))
+
+# -----------------------------------------------------------------------------
+
+
 # load in utterance data 
 
 female <- read.table("corpus_data/line_index_female.tsv",
