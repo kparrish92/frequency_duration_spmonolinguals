@@ -129,7 +129,8 @@ span_data %>%
 
 eng_data %>% 
   ggplot(., aes(x = log_freq, y = duration, color = length, shape = rate)) + 
-    geom_point(pch = 20) + geom_abline(intercept = y_int_e, slope = fixef(eng_model)[2, 1], 
+    geom_point(pch = 20) +
+ K geom_abline(intercept = y_int_e, slope = fixef(eng_model)[2, 1], 
     color = "darkred", size = 1.5) + xlab("Log Frequency") + ylab("Duration (ms)")
 
 ```
@@ -178,3 +179,33 @@ With rate and length controlled for in the model, all plausible estimates produc
 ##### 2. English: We may have a replication of the same lexical frequency effect in whole English words.
 
 With rate and length controlled for in the model, all plausible estimates produced by the Bayesian model are negative, indicating that as frequency increases, duration decreases. Additionally, the range of difference in ms from the most frequent to least frequent words is from `r high_e %>% round(digits = 2)`ms to `r low_e %>% round(digits = 2)`ms.
+
+```{r}
+
+
+# visualize differce in word duration observed 
+
+# horizontal bars that represent ms <- x axis is ms duration 
+# frequency on y axis 
+
+
+#
+#
+#------0000000--------
+#------00000000-------
+#f-----000000000------
+#r-----0000000000-------
+#e-----00000000000--------
+#q-----000000000000-------
+#u-----0000000000000-------
+#e-----00000000000000-------
+#n-----0000000000000000-------
+#c-----00000000000000000-------
+#y-----00000000000000000000-------
+#
+#
+#
+#
+###############duration######################################
+```
+
