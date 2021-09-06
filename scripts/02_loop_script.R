@@ -12,6 +12,11 @@ source(here::here("scripts", "01_helpers.R"))
 female <- read.table("corpus_data/line_index_female.tsv",
                      sep="\t", header=FALSE)
 
+male <- read.table("corpus_data/line_index_male.tsv",
+                     sep="\t", header=FALSE)
+
+
+# tidy and save subtlex data
 freq <- read.csv("lexicalfrequencydata/subtlex.csv")
 
 freq1 <- freq %>% 
@@ -43,22 +48,6 @@ freq_df <- rbind(freq1, freq2, freq3) %>%
   write.csv(here("lexicalfrequencydata", "subtlex_tidy.csv"))
 
 
-# pivot data so that each word is in its own cell
-
-
-df <- character()
-
-for(thisRun in 1:nrow(female)) {                                           # Head of for-loop
-  x1 <- strsplit(female$V2[thisRun], " ") %>% 
-    as.data.frame(col.names = "word") %>% 
-    mutate("participant" = female$V1[thisRun])
-  # Code block
-  print(x1)
-  df <- rbind(df, x1) %>% 
-    as.data.frame()
-}
-
-
 # loop to create txt files based on annotation data 
 
 for(thisRun in 1:nrow(female))
@@ -71,4 +60,18 @@ fileConn<-file(paste0(path))
 writeLines(female$V2[thisRun], fileConn)
 close(fileConn)
 }
+
+# write txt files for male data 
+
+for(thisRun in 1:nrow(male))
+{
+  filename <- male$V1[thisRun]  
+  direc <- "corpus_data/es_ar_male/"
+  end <- ".txt"
+  path <- paste0(direc,filename,end)
+  fileConn<-file(paste0(path))
+  writeLines(female$V2[thisRun], fileConn)
+  close(fileConn)
+}
+
 

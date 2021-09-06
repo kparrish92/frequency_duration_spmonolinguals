@@ -1,0 +1,154 @@
+---
+title: "Frequency effects on duration in three langauges"
+output: html_document
+---
+```{r setup, include=FALSE, echo=FALSE}
+library(here)
+library(readr)
+library(tidyverse)
+library(brms)
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE)
+library(bayestestR)
+```
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+```{r}
+# load needed data 
+span_data <- read.csv(here("corpus_data", "tidy", "span_tidy.csv"))
+eng_data <- read.csv(here("corpus_data", "tidy", "eng_tidy.csv"))
+germ_data <- read.csv(here("data", "tidy", "german_tidy.csv")) 
+span_model  <- read_rds(here("corpus_data", "models", "span_model_bayes.RDS"))
+eng_model <- read_rds(here("corpus_data", "models", "eng_model_bayes.RDS"))
+german_model <- read_rds(here("data", "models", "german_model.rds"))
+
+fixef_df_span <- fixef(span_model) %>% 
+  as.data.frame()
+fixef_df_eng <- fixef(eng_model) %>% 
+  as.data.frame()
+fixef_df_germ <- fixef(german_model) %>% 
+  as.data.frame()
+
+span_model_df <- span_model %>% 
+  as.data.frame()
+hdi_span <- hdi(span_model_df$b_log_freq_z) 
+
+# calculate range of difference from most to least frequent tokens 
+low = (fixef(span_model)[2,1]*min(span_data$log_freq, na.rm=TRUE) + fixef(span_model)[1,1])*1000 %>% 
+  as.data.frame()
+high = (fixef(span_model)[2,1]*max(span_data$log_freq, na.rm=TRUE) + fixef(span_model)[1,1])*1000 %>% 
+  as.data.frame()
+low_e = (fixef(eng_model)[2,1]*min(eng_data$log_freq, na.rm=TRUE) + fixef(eng_model)[1,1])*1000 %>% 
+  as.data.frame()
+high_e = (fixef(eng_model)[2,1]*max(eng_data$log_freq, na.rm=TRUE) + fixef(eng_model)[1,1])*1000 %>% 
+  as.data.frame()
+
+low_obs_e <- min(eng_data$log_freq, na.rm=TRUE)
+slope_e <- fixef(eng_model)[2,1]
+int_e <- fixef(eng_model)[1,1]
+
+low_obs_s <- min(span_model$log_freq, na.rm=TRUE)
+slope_s <- fixef(span_model)[2,1]
+int_s <- fixef(span_model)[1,1]
+# when x = 10.27, y = .559
+# what does y equal when x = 0?
+# multiple low_obs by slope minus intercept 
+y_int_e <- (low_obs_e*slope_e)*-1 + int_e
+y_int_s <- (slope_s*slope_s)*-1 + int_s
+
+fixef_df_eng <- fixef(eng_model) %>% 
+  as.data.frame()
+eng_model_df <- eng_model %>% 
+  as.data.frame()
+hdi_eng <- hdi(eng_model_df$b_log_freq) 
+
+corpus <- read.csv(here("lexicalfrequencydata", "subtlex_tidy.csv"))
+freq <- read.csv(here("eng_corpus_data", "tidy", "unigram_freq.csv"))
+
+# for plots 
+span_post <- as_tibble(span_model) %>% select(int = b_Intercept, b = b_log_freq_z)
+eng_post <- as_tibble(eng_model) %>% select(int = b_Intercept, b = b_log_freq_z) 
+
+germ_post <- as_tibble(german_model) %>% select(int = b_Intercept, b = b_log_freq_z)
+
+```
+
+
+##### Figure 1: Spanish data and most plausible line of best fit
+```{r}
+# spanish plot 
+span_data %>% 
+  ggplot(aes(x = duration_z, y = log_freq_z, color = length_z)) + geom_point() + geom_abline(intercept = 
+                                                                            fixef(span_model)[1, 1],
+                                                                           slope =  fixef(span_model)[2, 1], color = "darkred", size = 1.5)
+                       
+```
+
+
+##### Figure 2: English data and most plausible line of best fit
+```{r}
+
+eng_data %>% 
+  ggplot(aes(x = duration_z, y = log_freq_z, color = length_z)) + geom_point() + geom_abline(intercept = 
+                                                                            fixef(span_model)[1, 1],
+                                                                           slope =  fixef(span_model)[2, 1], color = "darkred", size = 1.5)
+```
+
+
+##### Figure 3: German data and most plausible line of best fit
+```{r}
+
+germ_data %>% 
+  ggplot(aes(x = duration_z, y = log_freq_z, color = length_z)) + geom_point() + geom_abline(intercept = 
+                                                                            fixef(german_model)[1, 1],
+                                                                           slope =  fixef(german_model)[2, 1], color = "darkred", size = 1.5)
+
+```
+
+##### Table 1: Spanish model 
+```{r}
+fixef(span_model) %>% 
+  knitr::kable(digits = 3)
+```
+
+##### Table 2: English model 
+```{r}
+fixef(eng_model) %>% 
+  knitr::kable(digits = 3)
+```
+
+##### Table 3: German model 
+```{r}
+fixef(german_model) %>% 
+  knitr::kable(digits = 3)
+```
+
+
+##### Figure 4: English Posterior distributions with medians and 80% intervals
+```{r}
+plot_title_eng <- ggtitle("English Posterior distributions",
+                      "with medians and 80% intervals")
+bayesplot::mcmc_areas(eng_post,
+           pars = c("b"),
+           prob = 0.8) + geom_vline(xintercept = 0) + xlim(-1, 1)
+```
+
+##### Figure 5: Spanish Posterior distributions with medians and 80% intervals
+```{r}
+plot_title_span <- ggtitle("Spanish Posterior distributions",
+                      "with medians and 80% intervals")
+bayesplot::mcmc_areas(span_post,
+           pars = c("b"),
+           prob = 0.8) + geom_vline(xintercept = 0) + xlim(-1, 1)
+```
+
+##### Figure 6: German Posterior distributions with medians and 80% intervals
+```{r}
+plot_title_german <- ggtitle("German Posterior distributions",
+                      "with medians and 80% intervals")
+bayesplot::mcmc_areas(germ_post,
+           pars = c("b"),
+           prob = 0.8) + geom_vline(xintercept = 0) + xlim(-1, 1)
+```

@@ -51,7 +51,7 @@ fixef_df_eng <- fixef(eng_model) %>%
   as.data.frame()
 span_model_df <- span_model %>% 
   as.data.frame()
-hdi_span <- hdi(span_model_df$b_log_freq) 
+hdi_span <- hdi(span_model_df$b_log_freq_z) 
 
 # calculate range of difference from most to least frequent tokens 
 low = (fixef(span_model)[2,1]*min(span_data$log_freq, na.rm=TRUE) + fixef(span_model)[1,1])*1000 %>% 
@@ -86,10 +86,8 @@ corpus <- read.csv(here("lexicalfrequencydata", "subtlex_tidy.csv"))
 freq <- read.csv(here("eng_corpus_data", "tidy", "unigram_freq.csv"))
 
 # for plots 
-span_post <- as_tibble(span_model) %>% select(int = b_Intercept, b = b_log_freq) %>% 
-  mutate(int2 = (low_obs_s*b)*-1 + int)
-eng_post <- as_tibble(eng_model) %>% select(int = b_Intercept, b = b_log_freq) %>% 
-    mutate(int2 = (low_obs_e*b)*-1 + int)
+span_post <- as_tibble(span_model) %>% select(int = b_Intercept, b = b_log_freq_z)
+eng_post <- as_tibble(eng_model) %>% select(int = b_Intercept, b = b_log_freq_z) 
 ```
 
 # Corpora
@@ -98,11 +96,11 @@ The corpora were found using a web-search which led to openslr.org, a website fo
 
 #### English corpus 
 
-The English corpus chosen was Free ST American English Corpus (https://openslr.org/45/). The corpus contained cell-phone recorded utterances from 10 total speakers (5 female), with each speaker providing around 350 utterances. A total of `r nrow(eng_data)` recordings met the criteria for inclusion in the present analysis in this study and included `r nrow(ranef(eng_model) %>% as.tibble())` unique words for analysis. The speech provided was appears to have been read speech and human transcribed, but additional details about this corpus were not provided. 
+The English corpus chosen was Free ST American English Corpus (https://openslr.org/45/). The corpus contained cell-phone recorded utterances from 10 total speakers (5 female), with each speaker providing around 350 utterances. A total of `r nrow(eng_data)` recordings met the criteria for inclusion in the present analysis in this study and included `r nrow(ranef(eng_model) %>% as_tibble())` unique words for analysis. The speech provided was appears to have been read speech and human transcribed, but additional details about this corpus were not provided. 
 
 #### Spanish corpus 
 
-The Spanish corpus is a crowdsourced high-quality Argentinian Spanish speech data set (https://openslr.org/61/) . The data was recorded by volunteers in Buenos Aires, Argentina. The total number of speakers in unclear, and might be as many as the number of observations (`r nrow(span_data)`). `r nrow(ranef(span_model) %>% as.tibble())` unique words were included in the analysis. This corpus also appears to be read speech. 
+The Spanish corpus is a crowdsourced high-quality Argentinian Spanish speech data set (https://openslr.org/61/) . The data was recorded by volunteers in Buenos Aires, Argentina. The total number of speakers in unclear, and might be as many as the number of observations (`r nrow(span_data)`). `r nrow(ranef(span_model) %>% as_tibble())` unique words were included in the analysis. This corpus also appears to be read speech. 
 
 # Statistical Analysis
 
@@ -116,23 +114,20 @@ Overall, the results suggest that higher frequency words shorten in both Spanish
 ```{r}
 # spanish plot 
 span_data %>% 
-  ggplot(., aes(x = log_freq, y = duration, color = length)) + 
-    geom_point(pch = 20) +
-  geom_abline(data = sample_n(span_post, 4000), 
-    aes(intercept = int2, slope = b), color = "grey80", alpha = 0.5) + 
-  geom_abline(intercept = fixef(span_model)[1, 1], slope = fixef(span_model)[2, 1], 
-    color = "darkred", size = 1.5) + ylim(0,1) + xlab("Log Frequency") + ylab("Duration (ms)")
+  ggplot(aes(x = duration_z, y = log_freq_z, color = length_z)) + geom_point() + geom_abline(intercept = 
+                                                                            fixef(span_model)[1, 1],
+                                                                           slope =  fixef(span_model)[2, 1], color = "darkred", size = 1.5)
+                       
 ```
 
 ##### Figure 2: English data and most plausible line of best fit
 ```{r}
 
-eng_data %>% 
-  ggplot(., aes(x = log_freq, y = duration, color = length, shape = rate)) + 
-    geom_point(pch = 20) +
- K geom_abline(intercept = y_int_e, slope = fixef(eng_model)[2, 1], 
-    color = "darkred", size = 1.5) + xlab("Log Frequency") + ylab("Duration (ms)")
 
+eng_data %>% 
+  ggplot(aes(x = duration_z, y = log_freq_z, color = length_z)) + geom_point() + geom_abline(intercept = 
+                                                                            fixef(span_model)[1, 1],
+                                                                           slope =  fixef(span_model)[2, 1], color = "darkred", size = 1.5)
 ```
 
 The parameter estimates for each model, as well as details regarding the dispursion of plausible parameter estiamtes, can be viewed in tables 1 and 2. The parameter estimate for `log_freq` in the Spanish model suggests that an increase in one unit of log frequency results a decrease in duration of `r fixef_df_span$Estimate[2] %>% round(digits = 3)*-1000`ms in duration, and the English model suggests that an increase in one unit of log frequency results a decrease in duration of `r fixef_df_eng$Estimate[2] %>% round(digits = 3)*-1000`ms in duration. 
