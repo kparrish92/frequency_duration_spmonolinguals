@@ -7,13 +7,10 @@ library(here)
 library(readr)
 library(tidyverse)
 library(brms)
-knitr::opts_chunk$set(echo = TRUE, warning = FALSE)
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE)
 library(bayestestR)
 ```
 
-```{r, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE)
-```
 
 # Overview 
 
@@ -100,7 +97,7 @@ The English corpus chosen was Free ST American English Corpus (https://openslr.o
 
 #### Spanish corpus 
 
-The Spanish corpus is a crowdsourced high-quality Argentinian Spanish speech data set (https://openslr.org/61/) . The data was recorded by volunteers in Buenos Aires, Argentina. The total number of speakers in unclear, and might be as many as the number of observations (`r nrow(span_data)`). `r nrow(ranef(span_model) %>% as_tibble())` unique words were included in the analysis. This corpus also appears to be read speech. 
+The Spanish corpus is a crowdsourced high-quality Argentinian Spanish speech data set (https://openslr.org/61/) . The data was recorded by volunteers in Buenos Aires, Argentina. The total number of speakers in unclear, and might be as many as the number of observations (`r nrow(span_data)`). 858 unique words were included in the analysis. This corpus also appears to be read speech. 
 
 # Statistical Analysis
 
@@ -152,7 +149,7 @@ plot_title_eng <- ggtitle("English Posterior distributions",
                       "with medians and 80% intervals")
 bayesplot::mcmc_areas(eng_post,
            pars = c("b"),
-           prob = 0.8) + geom_vline(xintercept = 0) + xlim(-.1, .1)
+           prob = 0.8) + geom_vline(xintercept = 0) + xlim(-1, 1)
 ```
 
 ##### Figure 4: Spanish Posterior distributions with medians and 80% intervals
@@ -161,7 +158,7 @@ plot_title_span <- ggtitle("Spanish Posterior distributions",
                       "with medians and 80% intervals")
 bayesplot::mcmc_areas(span_post,
            pars = c("b"),
-           prob = 0.8) + geom_vline(xintercept = 0) + xlim(-.1, .1)
+           prob = 0.8) + geom_vline(xintercept = 0) + xlim(-1, 1)
 ``` 
 
 
