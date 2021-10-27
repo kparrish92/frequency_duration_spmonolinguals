@@ -37,31 +37,22 @@ The data was analyzed using two Bayesian linear regressions with duration as the
 
 The results replicated the frequency effects previously found in English. 
 English frequent words were found to be shorter than infrequent ones when orthographic length and speech rate were controlled for (Figure 1).
-In Spanish, results exhibited a negative linear relationship between lexical frequency and word duration (Figure 2. 
+In Spanish, results exhibited a negative linear relationship between lexical frequency and word duration (Figure 2). 
 Frequent words were shorter than infrequent ones when orthographic length and speech rate were controlled for. 
 The findings have implications for neo-generative (Levelt, 1980), exemplar (Johnson, 1997), and hybrid (Pierrehumbert, 2016) models of sound representation.
 
 \clearpage
 
 ```{r, 'fig-cap1', echo=F}
-fig_cap1 <- "Whole word duration in English as a function of lexical frequency with the most plausible line of best fit."
+fig_cap1 <- "Whole word duration in English (Left Panel) and Spanish (Right Panel) as a function of lexical frequency and orthographic length (length_z) with the most plausible line of best fit."
 ```
 
-```{r, 'plot-eng', echo=F, fig.cap=fig_cap1, out.width="50%"}
+```{r, 'plot-eng', echo=F, fig.cap=fig_cap1, out.width="100%"}
 knitr::include_graphics(
-  here("docs", "abstracts", "NewSounds22", "figs", "eng_plot.png")
+  here("docs", "abstracts", "NewSounds22", "figs", "joined_plots.png")
 )
 ```
 
-```{r, 'fig-cap', echo=F}
-fig_cap <- "Whole word duration in Spanish as a function of lexical frequency with the most plausible line of best fit."
-```
-
-```{r, 'plot-span', echo=F, fig.cap=fig_cap, out.width="50%"}
-knitr::include_graphics(
-  here("docs", "abstracts", "NewSounds22", "figs", "span_plot.png")
-)
-```
 
 # References
 
