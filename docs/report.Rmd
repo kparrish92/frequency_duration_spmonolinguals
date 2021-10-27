@@ -120,7 +120,6 @@ span_data %>%
 ##### Figure 2: English data and most plausible line of best fit
 ```{r}
 
-
 eng_data %>% 
   ggplot(aes(x = duration_z, y = log_freq_z, color = length_z)) + geom_point() + geom_abline(intercept = 
                                                                             fixef(span_model)[1, 1],

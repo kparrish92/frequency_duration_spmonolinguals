@@ -74,7 +74,6 @@ merge_df %>%
   ggplot(aes(x = log_freq, y = duration)) + geom_point() + geom_smooth()
 
 
-
 merge_df$log_freq_z = scale(merge_df$log_freq)
 merge_df$duration_z = scale(merge_df$duration)
 merge_df$length_z = scale(merge_df$length)
