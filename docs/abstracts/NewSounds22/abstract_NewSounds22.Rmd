@@ -23,23 +23,19 @@ source(here::here("scripts", "00_libraries.R"))
 ```
 
 The present study investigates the effect of lexical frequency on word duration in Spanish and English monolingual speech. <!--- added "and English monolingual speech." ---> 
-Previous studies have found that vowel duration in English is influenced by extra-linguistic factors, such as lexical frequency [e.g., @gahl_2008; @gahl_2009; @lohmann_2018]. 
+Previous studies have found that word duration in English is influenced by lexical frequency since more frequent words tend to be shorter than infrequent ones [e.g., @gahl_2008; @gahl_2009; @lohmann_2018]. 
 <!--- I think the effects in the Gahl studies were actually full words, rather than vowels. It seems like this is the case for the Lohnmann study (word not vowels). Also, should we be more specific in the second sentence and say that word duration is shorter in more frequent words? -->
-The shortening of frequent forms relative to infrequent ones may correspond to articulatory routinization, which suggests that neuromotor routines become more reduced with repetition [@bybee_2001; @newmeyer_2006].  <!--- could we say neuromotor routines are carried out faster/quickened --->
-However, evidence showing that in homophone pairs (e.g., *thyme* – *time*), the item with higher frequency is shorter than the infrequent one reveals that frequency effects on duration may not be due to repetition of a phonological form but to lemma frequency effects instead. 
-In the case of Spanish, differences in vowel duration are not as prominent as in English. 
-Although vowel duration in Spanish unstressed syllables tends to be shorter than in stressed syllables [@galvez_1994], it is still unclear whether lemma frequency modulates duration in Spanish. <!--- Since we are focusing on word duration and not vowels (and I am fairly certain the earlier studies did too), we can probably take these two sentences out. --->
+The shortening of frequent forms may correspond to articulatory routinization [@bybee_2001; @newmeyer_2006], but evidence showing that in homophone pairs (e.g., *thyme* – *time*), the item with higher frequency is shorter than the infrequent one reveals that frequency effects on duration may not be due to repetition of a phonological form but to lemma frequency effects instead [@gahl_2008; @gahl_2009]. 
 
-The present study aims to, first, replicate the frequency effect found in duration in English [@gahl_2008; @gahl_2009; @lohmann_2018] but in whole duration.  <!--- took out "vowel" --->
-Second, the present study explores the effect of lexical frequency on word duration in Spanish. 
-This study analyzes corpus data from the online resource OpenSLR, with the English data coming from the Free ST American English Corpus and Spanish data from the Crowdsourced high-quality Argentinian Spanish speech data set [@guevara-rukoz-etal-2020-crowdsourcing]. 
+The present study aims to replicate the frequency effect found in duration in English [@gahl_2008; @gahl_2009; @lohmann_2018] and explore the effect of lexical frequency on word duration in Spanish. 
+This study analyzes corpus data from the online resource OpenSLR, with the English data coming from the Free ST American English Corpus and Spanish data from the Crowdsourced high-quality Argentinian Spanish speech data set [@guevara-rukoz-etal-2020-crowdsourcing].
 The English data consisted of 2806 recordings of cellphone conversations, and the Spanish data consisted of 1928 recordings of random Spanish sentences recorded by volunteers in Buenos Aires, Argentina.
-Lexical frequency was measured using movie subtitle frequencies as argued in [@new_use_2007].
+Lexical frequency was measured using movie subtitle frequencies [see @new_use_2007].
 The data was analyzed using two Bayesian linear regressions with duration as the outcome variable and speech rate and orthographic length as fixed predictors. <!--- I made some edits in here ---->
 
 The results replicated the frequency effects previously found in English, and expanded them to Spanish. 
-English frequent words were found to be shorter than infrequent ones when orthographic length and speech rate were controlled for (Figure 1, left panel).
-We found similar results in Spanish, where the results exhibited a negative linear relationship between lexical frequency and word duration (Figure 2, right panel). 
+English frequent words were found to be shorter than infrequent ones when orthographic length and speech rate were controlled for (Figure 1).
+We found similar results in Spanish, where the results exhibited a negative linear relationship between lexical frequency and word duration (Figure 1). 
 The findings have implications for neo-generative [@levelt_1989], exemplar [@johnson_2006], and hybrid [@pierrehumbert_2016] models of sound representation. <!--- I also made some edits in here ---->
 
 \clearpage
