@@ -22,13 +22,13 @@ library("knitr")
 source(here::here("scripts", "00_libraries.R"))
 ```
 
-The present study investigates the effect of lexical frequency on word duration in Spanish and English monolingual speech. 
+The present study investigates the effect of lexical frequency on word duration in Spanish and English. 
 Previous studies have found that word duration shortens in English in more frequent words [e.g., @gahl_2008; @gahl_2009; @lohmann_2018]. 
 The shortening of frequent forms may correspond to articulatory routinization [@bybee_2001; @newmeyer_2006], but evidence showing that in homophone pairs (e.g., *thyme* – *time*), the item with higher frequency is shorter than the infrequent one reveals that frequency effects on duration may not be due to repetition of a phonological form but to lemma frequency effects instead [@gahl_2008; @gahl_2009]. 
 
 The present study aims to replicate the frequency effect found in duration in English [@gahl_2008; @gahl_2009; @lohmann_2018] and explore the effect of lexical frequency on word duration in Spanish. 
 This study analyzes corpus data, with the English data coming from the Free ST American English Corpus and Spanish data from the Crowdsourced high-quality Argentinian Spanish speech data set [@guevara-rukoz-etal-2020-crowdsourcing].
-The English data were 2806 recordings of cellphone conversations, and the Spanish data consisted of 1928 recordings of random Spanish sentences recorded by volunteers in Buenos Aires, Argentina.
+The English data were 2806 recordings of cellphone conversations, and the Spanish data consisted of 1928 recordings of random Spanish sentences recorded by Argentinian speakers.
 Lexical frequency was measured using movie subtitle frequencies [see @new_use_2007].
 The data was analyzed using two Bayesian linear regressions with duration as the outcome variable and speech rate and orthographic length as fixed predictors. 
 
