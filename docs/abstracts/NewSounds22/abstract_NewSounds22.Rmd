@@ -2,7 +2,10 @@
 title: "The effect of lexical frequency on word duration: analyzing corpus data in Spanish and English"
 author: ""
 date: ""
-output: word_document
+output: pdf_document
+    latex_engine: xelatex
+sansfont: Calibri Light
+
 #  pdf_document: 
 #    fig_caption: yes
 #    keep_tex: yes
@@ -11,6 +14,10 @@ header-includes:
    - \usepackage{xcolor}
 fontsize: 12pt
 #csl: ../../bib/apa.csl
+---
+
+
+---
 
 bibliography      : 
   - "./bib/references.bib"

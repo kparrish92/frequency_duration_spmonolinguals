@@ -1,0 +1,67 @@
+---
+title: "Evidence of a frequency effect in Spanish L1 word duration"
+author: ""
+date: ""
+output: word_document
+#  pdf_document: 
+#    fig_caption: yes
+#    keep_tex: yes
+header-includes:
+   - \usepackage{tipa}
+   - \usepackage{xcolor}
+fontsize: 12pt
+#csl: ../../bib/apa.csl
+
+bibliography      : 
+  - "./bib/references.bib"
+---
+
+```{r setup, include = FALSE}
+library("papaja")
+library("knitr")
+source(here::here("scripts", "00_libraries.R"))
+```
+
+In linguistic research, the nature of the relationship between linguistic sound representation and extra-linguistic factors such as lexical frequency have been a point of debate, and whether these factors impact sound representation on a language-specific or universal basis.
+For instance, previous studies have found evidence that more frequent words in English tend to have shorter duration.
+These studies have involved homophone pairs in English (e.g., *time* versus *thyme*) and have found that the lower frequency member of the pair (thyme) typically has a longer duration that the high frequency word (time).
+Previous research has argued that this result rules out articulatory routinization effects as a possible explanation for shorter duration of frequent words, and suggests that lemma frequency is a more fitting explanation [@gahl_2008; @gahl_2009; @lohmann_2018].
+However, it is unclear whether the frequency effect documented in English is language specific or could be observed cross-linguistically. 
+
+To address this question, we investigate whether there is evidence of similar shortening of more frequent words in Spanish using methods in corpus phonetics while also aiming to replicate previous findings in English.
+This study analyzes two corpora, with the English data coming from the Free ST American English Corpus and Spanish data from the Crowdsourced high-quality Argentinian Spanish speech data set [@guevara-rukoz-etal-2020-crowdsourcing].
+The English corpus consists of 2806 recordings of cellphone conversations, while the Spanish data was made up of 1928 recordings of random Spanish sentences recorded by Argentinian speakers.
+Lexical frequency was measured using movie subtitle frequencies [see @new_use_2007].
+We ran two Bayesian multilevel regression models in which duration was the outcome variable and speech rate and orthographic length were population level predictors. 
+
+The results point to a replication frequency effects previously found in English, and expanded them to Spanish, in which the parameter estimates of the models suggest that the effect size if similar in both languages. 
+Specifically, English frequent words were found to be shorter than infrequent ones when orthographic length and speech rate were controlled for (Figure 1).
+We found similar results in Spanish, where a negative distribution of parameter estimate from the Bayesian model is taken as evidence that increasing frequency is associated with shorter whole word duration (Figure 1). 
+These findings have implications for theories of universal sound representation, since the present data supports the notion that lexical frequency similarly effects are similar cross-linguistically. 
+
+\clearpage
+
+```{r, 'fig-cap', echo=F}
+fig_caption <- "Whole word duration in English (Left Panel) and Spanish (Right Panel) as a function of lexical frequency and orthographic length (length_z) with the most plausible line of best fit."
+```
+
+```{r, 'plot-joined', echo=F, fig.cap=fig_caption, out.width="100%"}
+knitr::include_graphics(
+  here("docs", "abstracts", "NewSounds22", "figs", "joined_plots.png")
+)
+```
+
+\begin{center}
+References
+\end{center}
+
+\begingroup
+\setlength{\parindent}{-0.5in}
+\setlength{\leftskip}{0.5in}
+
+\phantom{.} 
+\textcolor{white}{\\} 
+\vspace{-0.5in}
+
+<div id = "refs"></div>
+\endgroup
