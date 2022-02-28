@@ -29,4 +29,6 @@ library("ganttrify")
 library("webshot")
 library("kableExtra")
 library("hrbrthemes")
+library(scales)
+library(HDInterval) 
 # ------------------------------------------
