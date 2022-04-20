@@ -1,0 +1,312 @@
+---
+title: "Evidence of a frequency effect in Spanish L1 word duration"
+subtitle: 'New Sounds 2022'
+author  : "Nicole Rodríguez, Kyle Parrish and Juan José Garrido Pozu"
+date    : "Rutgers University"
+output:
+  xaringan::moon_reader:
+    chakra: "https://cdnjs.cloudflare.com/ajax/libs/remark/0.14.0/remark.min.js"
+    lib_dir: libs
+    css: [default, hygge, rutgers, rutgers-fonts]
+    nature:
+      beforeInit: ["https://www.jvcasillas.com/ru_xaringan/js/ru_xaringan.js"]
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+      ratio: 16:9
+---
+
+```{r, include = FALSE}
+library(here)
+library(tidyverse)
+library(lme4)
+```
+
+```{r, setup, include=FALSE}
+knitr::opts_chunk$set(
+  comment = '', fig.width = 6, fig.height = 6, message = FALSE, warning = FALSE, echo = FALSE
+)
+```
+
+```{r, include=FALSE}
+source(here::here("scripts", "00_libraries.R"))
+source(here::here("scripts", "05_small_data.R"))
+```
+
+
+class: title-slide-section, middle
+
+# The English words "time" and "thyme" are not homophones
+
+.footnote[
+Gahl (2008)
+]
+
+---
+
+# Gahl (2008, 2009) 
+
+.pull-left[
+**The Study**
+- Compared the duration of **80,179 tokens** of **223 homophone pairs** from the Switchboard Corpus
+
+- Switchboard - telephone conversations between American English speaking strangers. 
+
+- Testing the claim that frequency effects in duration is part of phonological form.
+
+  - Homophones (e.g., *time* and *thyme*) should shorten equally, given that they were assumed to have the same phonological form.
+]
+
+--
+
+.pull-right[
+**The Results**
+- Overall, the **higher frequency** member of the homophone pair exhibited **shorter duration** than the low frequency word. 
+
+- This result held when considering several other predictors constant
+]
+
+---
+
+# Background 
+
+.large[
+**Big picture**: This is important because language-external factors may impact language representations
+]
+
+--
+
+.large[
+**Justification**: There is a lack of research investigating whether frequency driven duration effects occur accross language classes (e.g., stress-timed versus syllable-timed)
+]
+
+--
+
+.large[
+**Relevance to SLA**: Teases apart baseline in input from L1 effects in L2 populations.
+]
+
+???
+This is important for language acquisition, broadly, since it provides evidence that frequency effects in L2 Spanish might be related to the baseline (and perhaps input by extension), rather than some underlying L1 effect.
+]
+
+---
+
+# RQs
+
+.pull-left[
+.big[
+**RQ1:** Is there an association in Spanish whole-word duration and lexical frequency?
+
+**H1:** Yes, higher lexical frequency will be associated with lower word duration. 
+]]
+
+--
+
+.pull-right[
+.big[
+**RQ2:** Will the frequency effect found in previous studies in English be replicated? 
+
+**H2:** Yes, more frequent words in English will also shorten. 
+]]
+
+
+---
+# Method 
+
+.large[
+We examined whether **increased lexical frequency** was associated with **shorter duration** in Spanish monolingual corpus data.
+]
+
+--
+
+.large[
+Additionally, we aimed to **replicate** the previous frequency effects found in **English**.
+]
+
+---
+
+# The Corpora 
+
+.pull-left[
+.content-box-blue[
+**English corpus**
+
+Free ST American English Corpus (https://openslr.org/45/).
+
+Cell-phone recorded utterances from 10 total speakers (5 female) speaker 
+
+350 utterances per speaker.
+
+A total of 2806 recordings were included.
+
+1162 unique words for analysis. 
+]
+]
+
+--
+
+.pull-right[
+.content-box-red[
+**Spanish corpus**
+
+Crowdsourced high-quality Argentinian Spanish speech data set (https://openslr.org/61/)
+
+Recorded by volunteers in Buenos Aires, Argentina. 
+
+The total number of speakers in unclear, 
+
+1928 recordings containing 858 unique words 
+]
+]
+
+---
+
+# Lexical Frequency 
+
+.big[
+- We measured lexical frequency using the **Subtlex Corpus** in **Spanish**  and **English**
+]
+
+.big[
+- Based on movie and TV subtitles, rather than text-based frequency measures.
+] 
+
+
+.footnote[
+(Ceutos et al., 2011; Brysbaert & New, 2009)
+]
+---
+
+# Procedure
+
+.pull-left[
+**Segmentation Procedure**
+
+- The corpora contained a series of `.wav` files, and a single transcript of each utterance
+
+- We used R to create individual `.txt` files and matched them to each audio file.
+
+- Each `.wav` and `.txt` file pair were used to automatically segment the data in WebMaus basic.
+
+
+- Checks for quality have been promising, though a large scale hand-correction is needed.
+]
+
+--
+
+.pull-right[
+**Data tidying**
+- Only 4-8 grapheme words in both languages were included in the analysis to largely avoid function words. 
+
+- Cleaned words in `.txt` files by removing capital letters, spaces, and punctuation.
+
+- Loaded and joined the lexical frequency corpus data with the word duration data. 
+]
+
+---
+
+background-image: url(./img/webmaus.png)
+background-size: contain
+
+
+---
+
+background-image: url(./img/praat_ex.png)
+background-size: contain
+
+---
+
+# Statistical Analysis
+
+**Method**: Bayesian multilevel Regressions (one per language)
+
+**Outcome variables**: Duration z-score
+
+--
+
+**Predictor**: *Log-transformed Lexical Frequency Z* - taken directly from the corpora and converted to a z-score.
+
+**Predictor**: *Speech Rate*: measured as segments per second and standardized as a z-score
+
+**Predictor**: *Length*: measured as the number of graphemes per word and convered to a z-score
+
+--
+
+`duration_z ~ log_freq_z + rate_z + length_z + (1 | word) + (1 | participant)`
+
+.footnote[
+Random intercepts per word/token and speaker were also included.
+]
+
+---
+
+class: title-slide-section, middle
+
+# Results 
+
+---
+
+background-image: url(./img/span.png)
+background-size: contain
+
+---
+
+background-image: url(./img/eng.png)
+background-size: contain
+
+---
+
+background-image: url(./img/span_forest.png)
+background-size: contain
+
+---
+
+background-image: url(./img/eng_forest.png)
+background-size: contain
+
+---
+# Results
+
+##### Table 1: Spanish model 
+```{r}
+fixef(span_model) %>% 
+  knitr::kable(digits = 3)
+```
+
+--
+
+##### Table 2: English model 
+```{r}
+fixef(eng_model) %>% 
+  knitr::kable(digits = 3)
+```
+
+---
+
+# Summary
+
+.pull-left[
+**Findings**
+
+- Higher lexical frequency was associated with shorter whole word duration in English and Spanish
+
+- Overall, we replicated the frequency effect in English reported by Gahl (2008, 2009)
+
+- We expanded this to Spanish, in which the effect was similar overall. 
+]
+
+--
+
+.pull-right[
+**Future directions**
+
+- Future work could examine whether L2 learners acquire native-like frequency driven duration effects in perception and production. 
+]
+
+
+---
+
+class: title-slide-section, middle
+
+# Thank you! Questions? 
