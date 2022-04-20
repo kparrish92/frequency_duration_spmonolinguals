@@ -1,4 +1,5 @@
 library(scales)
+library(lme4)
 source(here::here("scripts", "05_small_data.R"))
 
 # Draws 
@@ -10,12 +11,12 @@ eng = as.data.frame(eng_model) %>%
 
 # Scatter plots
 
-ggplot(eng_data, aes(x = duration_z, 
-                     y = log_freq_z, 
+ggplot(eng_data, aes(x = log_freq_z, 
+                     y = duration_z, 
                      color = length_z)) +
   geom_point(size = 2, shape = 20) +
   scale_colour_gradient(low = "orange", high = muted("orange")) +
-  xlab("Duration Z-score") + ylab("Log Frequency Z score") +
+  xlab("Log Frequency Z score") + ylab("Duration Z-score") +
   theme_bw() +
   theme(panel.background = element_rect(fill = "grey79"),
         legend.position = "bottom") + 
@@ -30,12 +31,12 @@ ggplot(eng_data, aes(x = duration_z,
   ggsave(here("slides", "img", "eng.png"))
 
 
-ggplot(span_data, aes(x = duration_z, 
-                      y = log_freq_z, 
+ggplot(span_data, aes(x = log_freq_z, 
+                      y = duration_z, 
                       color = length_z)) +
   geom_point(size = 2, shape = 20) +
   scale_colour_gradient(low = "cyan", high = muted("cyan")) +
-  xlab("Duration Z-score") + ylab("Log Frequency Z score") +
+  xlab("Log Frequency Z score") + ylab("Duration Z-score") +
   theme_bw() +
   theme(panel.background = element_rect(fill = "grey79"),
         legend.position = "bottom") + 
